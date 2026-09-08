@@ -64,3 +64,47 @@ resource "aws_route_table_association" "RTSubnetB" {
   subnet_id      = aws_subnet.subnetB.id
   route_table_id = aws_route_table.ecsRT.id
 }
+
+
+# ALB SG
+resource "aws_security_group" "alb_sg" {
+  name   = "albSG"
+  vpc_id = aws_vpc.ecs-vpc.id
+}
+# ECS SG
+resource "aws_security_group" "ecs_sg" {
+  name   = "ecsSG"
+  vpc_id = aws_vpc.ecs-vpc.id
+}
+# ALB SG Rules
+resource "aws_vpc_security_group_ingress_rule" "example" {
+  security_group_id = aws_security_group.example.id
+
+  cidr_ipv4   = "10.0.0.0/8"
+  from_port   = 80
+  to_port     = 80
+  ip_protocol = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "example" {
+  security_group_id = aws_security_group.example.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "-1"
+}
+# ECS SG Rules
+resource "aws_vpc_security_group_ingress_rule" "example" {
+  security_group_id = aws_security_group.example.id
+
+  cidr_ipv4   = "10.0.0.0/8"
+  from_port   = 80
+  to_port     = 80
+  ip_protocol = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "example" {
+  security_group_id = aws_security_group.example.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "-1"
+}
