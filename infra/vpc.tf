@@ -43,3 +43,24 @@ resource "aws_internet_gateway" "gw" {
     Name = "IGW"
   }
 }
+
+
+# Route Table
+resource "aws_route_table" "ecsRT" {
+  vpc_id = aws_vpc.ecs-vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+}
+
+# Route Table Association
+resource "aws_route_table_association" "RTSubnetA" {
+  subnet_id      = aws_subnet.subnetA.id
+  route_table_id = aws_route_table.ecsRT.id
+}
+resource "aws_route_table_association" "RTSubnetB" {
+  subnet_id      = aws_subnet.subnetB.id
+  route_table_id = aws_route_table.ecsRT.id
+}
