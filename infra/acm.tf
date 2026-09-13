@@ -13,6 +13,18 @@ resource "aws_route53_zone" "threatmod_route53" {
   name = "shabnamkhan.tech"
 }
 
+# alis record pointing to subdomain
+resource "aws_route53_record" "tm_subdomain" {
+  zone_id = aws_route53_zone.threatmod_route53.zone_id
+  name    = "tm.shabnamkhan.tech"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.ecs_alb.dns_name
+    zone_id                = aws_lb.ecs_alb.zone_id
+    evaluate_target_health = true
+  }
+}
 
 
 # ACM VAlidation

@@ -41,6 +41,10 @@ resource "aws_ecs_task_definition" "ecs_service" {
   network_mode             = "awsvpc"
   cpu                      = "512"
   memory                   = "1024"
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "ARM64"
+  }
   container_definitions = jsonencode([
     {
       name      = "threatmod-container"
