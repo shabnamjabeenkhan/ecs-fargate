@@ -23,3 +23,5 @@ jobs:
       run:  docker tag threatmod:${{ github.sha }} 446503125863.dkr.ecr.eu-west-2.amazonaws.com/threatmod:${{ github.sha }}
     - name: Push Image
       run: docker push 446503125863.dkr.ecr.eu-west-2.amazonaws.com/threatmod:${{ github.sha }}
+    - name: Print Message
+      run: echo "Docker Image Pushed Successfully!"  
