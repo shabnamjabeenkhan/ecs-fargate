@@ -30,3 +30,8 @@ module "alb" {
   ecs_vpc_ID   = module.vpc.ecs_vpc_ID
   acm_cert_arn = module.acm.acm_cert_arn
 }
+
+module "github_oidc" {
+  source       = "./modules/github_oidc"
+  ecs_repo_arn = module.ecr.ecs_repo_arn
+}
