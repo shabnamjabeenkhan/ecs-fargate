@@ -24,7 +24,7 @@ Principal = {
 Condition = {
     StringEquals = {
         "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-        "token.actions.githubusercontent.com:sub" = "repo:shabnamjabeenkhan/ecs-fargate:ref:refs/heads/main"
+        "token.actions.githubusercontent.com:sub" = "repo:shabnamjabeenkhan@98359890/ecs-fargate@1343249014:ref:refs/heads/main"
     }
 }
 }
