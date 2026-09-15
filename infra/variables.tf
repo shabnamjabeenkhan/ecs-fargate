@@ -1,12 +1,12 @@
 
 variable "app_port" {
-  type = number
+  type    = number
   default = 8080
 }
 
 variable "alb_port" {
-type = number
-default = 443
+  type    = number
+  default = 443
 }
 
 variable "desired_count" {

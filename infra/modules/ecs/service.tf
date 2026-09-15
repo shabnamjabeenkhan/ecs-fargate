@@ -3,22 +3,22 @@ resource "aws_ecs_service" "threatmod_service" {
   name            = "threatmod-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_service.arn
-  desired_count   = 1
+  desired_count   = 0
   launch_type     = "FARGATE"
-  depends_on      = [aws_lb_listener.alb_listener]
+  # depends_on      = [var.alb_listener] 
 
   network_configuration {
     subnets = [
-      aws_subnet.subnetA.id,
-      aws_subnet.subnetB.id
+      var.subnet_A_ID,
+      var.subnet_B_ID 
     ]
-    security_groups  = [aws_security_group.ecs_sg.id]
+    security_groups  = [var.ecs_sg_ID] 
     assign_public_ip = true
   }
 
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.ecs_target_group.arn
+    target_group_arn = var.ecs_target_group_arn 
     container_name   = "threatmod-container"
     container_port   = 8080
   }

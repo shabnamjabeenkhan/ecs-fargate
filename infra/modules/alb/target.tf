@@ -4,7 +4,7 @@ resource "aws_lb_target_group" "ecs_target_group" {
   port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = aws_vpc.ecs-vpc.id
+  vpc_id      = var.ecs_vpc_ID 
   health_check {
     path     = "/"
     protocol = "HTTP"

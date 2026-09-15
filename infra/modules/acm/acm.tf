@@ -20,8 +20,8 @@ resource "aws_route53_record" "tm_subdomain" {
   type    = "A"
 
   alias {
-    name                   = aws_lb.ecs_alb.dns_name
-    zone_id                = aws_lb.ecs_alb.zone_id
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_zone_id
     evaluate_target_health = true
   }
 }
