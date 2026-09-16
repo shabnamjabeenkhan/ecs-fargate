@@ -33,6 +33,14 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
 }
 
 
+resource "aws_cloudwatch_log_group" "ecs_logs" {
+  name              = "/ecs/threatmod"
+  retention_in_days = 7
+}
+
+
+
+
 # Task Definition
 resource "aws_ecs_task_definition" "ecs_service" {
   family                   = "threatmod-service"
@@ -43,7 +51,7 @@ resource "aws_ecs_task_definition" "ecs_service" {
   memory                   = "1024"
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture = "X86_64"
   }
   container_definitions = jsonencode([
     {
@@ -56,6 +64,15 @@ resource "aws_ecs_task_definition" "ecs_service" {
           hostPort      = 8080
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs"
+
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
+          "awslogs-region"        = "eu-west-2"
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
     },
   ])
 }

@@ -82,6 +82,27 @@ resource "aws_iam_role_policy" "iam_role_permission" {
 
   Effect   = "Allow"
   Resource = var.ecs_role_arn
+},
+{
+  Action = [
+    "s3:ListBucket"
+  ]
+
+  Effect   = "Allow"
+  Resource = "arn:aws:s3:::threatmod-terraform-state-446503125863"
+},
+{
+  Action = [
+    "s3:GetObject",
+    "s3:PutObject",
+    "s3:DeleteObject"
+  ]
+
+  Effect = "Allow"
+  Resource = [
+    "arn:aws:s3:::threatmod-terraform-state-446503125863/ecs-fargate/terraform.tfstate",
+    "arn:aws:s3:::threatmod-terraform-state-446503125863/ecs-fargate/terraform.tfstate.tflock"
+  ]
 }
     ]
   })
