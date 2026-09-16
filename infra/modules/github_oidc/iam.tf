@@ -63,7 +63,7 @@ resource "aws_iam_role_policy" "iam_role_permission" {
         Effect   = "Allow"
         Resource = var.ecs_repo_arn
       },
-       {
+      {
         Action = [
           "ecs:RegisterTaskDefinition",
           "ecs:DeregisterTaskDefinition",
@@ -76,33 +76,74 @@ resource "aws_iam_role_policy" "iam_role_permission" {
         Resource = "*"
       },
       {
-  Action = [
-    "iam:PassRole"
-  ]
+        Action = [
+          "iam:PassRole"
+        ]
 
-  Effect   = "Allow"
-  Resource = var.ecs_role_arn
-},
-{
-  Action = [
-    "s3:ListBucket"
-  ]
+        Effect   = "Allow"
+        Resource = var.ecs_role_arn
+      },
+      {
+        Action = [
+          "s3:ListBucket"
+        ]
 
-  Effect   = "Allow"
-  Resource = "arn:aws:s3:::threatmod-terraform-state-446503125863"
-},
-{
-  Action = [
-    "s3:GetObject",
-    "s3:PutObject",
-    "s3:DeleteObject"
-  ]
+        Effect   = "Allow"
+        Resource = "arn:aws:s3:::threatmod-terraform-state-446503125863"
+      },
+      {
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
 
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:s3:::threatmod-terraform-state-446503125863/ecs-fargate/terraform.tfstate",
+          "arn:aws:s3:::threatmod-terraform-state-446503125863/ecs-fargate/terraform.tfstate.tflock"
+        ]
+      },
+      {
   Effect = "Allow"
-  Resource = [
-    "arn:aws:s3:::threatmod-terraform-state-446503125863/ecs-fargate/terraform.tfstate",
-    "arn:aws:s3:::threatmod-terraform-state-446503125863/ecs-fargate/terraform.tfstate.tflock"
+
+  Action = [
+    # VPC / networking - Terraform state refresh
+    "ec2:Describe*",
+
+    # Load Balancer
+    "elasticloadbalancing:Describe*",
+
+    # ECS
+    "ecs:DescribeClusters",
+    "ecs:ListTagsForResource",
+
+    # ECR
+    "ecr:DescribeRepositories",
+    "ecr:ListTagsForResource",
+
+    # ACM
+    "acm:DescribeCertificate",
+    "acm:ListTagsForCertificate",
+
+    # Route53
+    "route53:GetHostedZone",
+    "route53:ListResourceRecordSets",
+    "route53:ListTagsForResource",
+
+    # IAM resources managed by Terraform
+    "iam:GetOpenIDConnectProvider",
+    "iam:GetRole",
+    "iam:GetRolePolicy",
+    "iam:ListRolePolicies",
+    "iam:ListAttachedRolePolicies",
+
+    # CloudWatch Logs
+    "logs:DescribeLogGroups",
+    "logs:ListTagsForResource"
   ]
+
+  Resource = "*"
 }
     ]
   })
