@@ -22,5 +22,4 @@ resource "aws_ecs_service" "threatmod_service" {
     container_name   = "threatmod-container"
     container_port   = 8080
   }
-
 }
