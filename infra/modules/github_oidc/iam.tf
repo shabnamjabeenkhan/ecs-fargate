@@ -10,25 +10,25 @@ resource "aws_iam_openid_connect_provider" "github_actions_provider" {
 
 # Creating IAM role
 resource "aws_iam_role" "github_actions_iam_role" {
-  name                = "threatmod-github-actions-iam-role"
-  assume_role_policy  = jsonencode({
-  Version = "2012-10-17"
+  name = "threatmod-github-actions-iam-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
 
-  Statement = [
-{
-    Effect = "Allow"
-    Action = "sts:AssumeRoleWithWebIdentity"
-Principal = {
-  Federated = aws_iam_openid_connect_provider.github_actions_provider.arn
-}
-Condition = {
-    StringEquals = {
-        "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-        "token.actions.githubusercontent.com:sub" = "repo:shabnamjabeenkhan@98359890/ecs-fargate@1343249014:ref:refs/heads/main"
-    }
-}
-}
-  ]
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_actions_provider.arn
+        }
+        Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+            "token.actions.githubusercontent.com:sub" = "repo:shabnamjabeenkhan@98359890/ecs-fargate@1343249014:ref:refs/heads/main"
+          }
+        }
+      }
+    ]
   })
 }
 
@@ -39,30 +39,50 @@ resource "aws_iam_role_policy" "iam_role_permission" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-   Statement = [
+    Statement = [
 
 
-  {
-    Action = [
-      "ecr:GetAuthorizationToken"
-    ]
+      {
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
 
-    Effect   = "Allow"
-    Resource = "*"
-  },
+        Effect   = "Allow"
+        Resource = "*"
+      },
 
 
-  {
-    Action = [
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload",
-      "ecr:PutImage"
-    ]
+      {
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:PutImage"
+        ]
         Effect   = "Allow"
         Resource = var.ecs_repo_arn
       },
+       {
+        Action = [
+          "ecs:RegisterTaskDefinition",
+          "ecs:DeregisterTaskDefinition",
+          "ecs:DescribeTaskDefinition",
+          "ecs:DescribeServices",
+          "ecs:UpdateService"
+        ]
+
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+  Action = [
+    "iam:PassRole"
+  ]
+
+  Effect   = "Allow"
+  Resource = var.ecs_role_arn
+}
     ]
   })
 }

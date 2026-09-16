@@ -6,6 +6,7 @@ module "ecs" {
   ecs_sg_ID            = module.vpc.ecs_sg_ID
   ecs_target_group_arn = module.alb.ecs_target_group_arn
   depends_on           = [module.alb]
+  image_tag            = var.image_tag
 }
 
 module "vpc" {
@@ -34,4 +35,5 @@ module "alb" {
 module "github_oidc" {
   source       = "./modules/github_oidc"
   ecs_repo_arn = module.ecr.ecs_repo_arn
+  ecs_role_arn = module.ecs.ecs_role_arn
 }

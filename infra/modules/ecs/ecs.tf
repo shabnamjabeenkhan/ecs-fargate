@@ -48,7 +48,7 @@ resource "aws_ecs_task_definition" "ecs_service" {
   container_definitions = jsonencode([
     {
       name      = "threatmod-container"
-      image     = "446503125863.dkr.ecr.eu-west-2.amazonaws.com/threatmod:v7"
+      image     = "446503125863.dkr.ecr.eu-west-2.amazonaws.com/threatmod:${var.image_tag}"
       essential = true
       portMappings = [
         {

@@ -17,3 +17,7 @@ variable "ecs_sg_ID" {
 variable "ecs_target_group_arn" {
   type = string
 }
+# image tag
+variable "image_tag" {
+  type = string
+}
