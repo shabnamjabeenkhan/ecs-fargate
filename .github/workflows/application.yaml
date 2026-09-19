@@ -1,0 +1,39 @@
+name: Application Pipeline
+on:
+  push:
+    branches:
+      - main
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps: 
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+ 
+
+    - name: Authenticate to AWS
+      uses: aws-actions/configure-aws-credentials@v6.3.0
+      with: 
+        role-to-assume: arn:aws:iam::446503125863:role/threatmod-github-actions-iam-role
+        aws-region: eu-west-2
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v2 
+
+    - name: Build Docker Image
+      run: docker build -t threatmod:${{ github.sha }} .  
+
+    - name: Tag Image
+      run:  docker tag threatmod:${{ github.sha }} 446503125863.dkr.ecr.eu-west-2.amazonaws.com/threatmod:${{ github.sha }}
+
+    - name: Push Image
+      run: docker push 446503125863.dkr.ecr.eu-west-2.amazonaws.com/threatmod:${{ github.sha }}
+
+    - name: Print Message
+      run: echo "Docker Image Pushed Successfully!" 
+   

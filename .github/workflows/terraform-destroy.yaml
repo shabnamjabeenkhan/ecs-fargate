@@ -1,0 +1,32 @@
+name: Destroy Infrastructure
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Authenticate to AWS
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          role-to-assume: arn:aws:iam::446503125863:role/threatmod-github-actions-iam-role
+          aws-region: eu-west-2   
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: ./infrar
+        run: terraform init
+
+      - name: Terraform Destroy
+        working-directory: ./infra
+        run: terraform destroy -auto-approve -var="image_tag=${{ github.sha }}"     
