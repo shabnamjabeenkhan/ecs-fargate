@@ -108,6 +108,11 @@ The trust relationship is restricted to the intended GitHub repository/branch.
 
 This provides short-lived AWS credentials to the workflow rather than maintaining long-lived IAM user credentials.
 
+The CI/CD setup is separated into three pipelines:
+
+1. **Build & Push Pipeline**
+2. **Terraform Deploy Pipeline**
+3. **Terraform Destroy Pipeline**
 
 # Key Lessons
 
