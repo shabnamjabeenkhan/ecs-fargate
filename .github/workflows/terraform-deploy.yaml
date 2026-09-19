@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  Deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,3 +40,5 @@ jobs:
       - name: Terraform Apply
         working-directory: ./infra
         run: terraform apply -auto-approve -var="image_tag=${{ inputs.image_tag }}"
+      - name: Post-Deploy Health Check
+        run: curl --fail https://tm.shabnamkhan.tech/health   
