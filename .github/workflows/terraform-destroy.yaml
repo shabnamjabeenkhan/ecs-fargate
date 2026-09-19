@@ -24,7 +24,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: ./infrar
+        working-directory: ./infra
         run: terraform init
 
       - name: Terraform Destroy
