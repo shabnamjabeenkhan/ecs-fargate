@@ -29,4 +29,4 @@ jobs:
 
       - name: Terraform Destroy
         working-directory: ./infra
-        run: terraform plan -destroy -var="image_tag=${{ github.sha }}"     
+        run: terraform destroy -auto-approve -var="image_tag=${{ github.sha }}"     

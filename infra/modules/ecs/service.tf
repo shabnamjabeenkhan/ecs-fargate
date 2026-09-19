@@ -3,7 +3,7 @@ resource "aws_ecs_service" "threatmod_service" {
   name            = "threatmod-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_service.arn
-  desired_count   = 1
+  desired_count   = 0
   launch_type     = "FARGATE"
   # depends_on      = [var.alb_listener] 
 
